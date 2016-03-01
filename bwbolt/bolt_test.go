@@ -196,34 +196,32 @@ func TestQueryMethods(t *testing.T) {
 
 	los := []*storage.LookupOptions{
 		{},
-		/*
-			{
-				MaxElements: 1,
-			},
-			{
-				LowerAnchor: &minAnchor,
-			},
-			{
-				LowerAnchor: &minAnchor,
-				MaxElements: 1,
-			},
-			{
-				UpperAnchor: &maxAnchor,
-			},
-			{
-				UpperAnchor: &maxAnchor,
-				MaxElements: 1,
-			},
-			{
-				LowerAnchor: &minAnchor,
-				UpperAnchor: &maxAnchor,
-			},
-			{
-				LowerAnchor: &minAnchor,
-				UpperAnchor: &maxAnchor,
-				MaxElements: 1,
-			},
-		*/
+		{
+			MaxElements: 1,
+		},
+		{
+			LowerAnchor: &minAnchor,
+		},
+		{
+			LowerAnchor: &minAnchor,
+			MaxElements: 1,
+		},
+		{
+			UpperAnchor: &maxAnchor,
+		},
+		{
+			UpperAnchor: &maxAnchor,
+			MaxElements: 1,
+		},
+		{
+			LowerAnchor: &minAnchor,
+			UpperAnchor: &maxAnchor,
+		},
+		{
+			LowerAnchor: &minAnchor,
+			UpperAnchor: &maxAnchor,
+			MaxElements: 1,
+		},
 	}
 	cnt := 0
 	for _, lo := range los {
