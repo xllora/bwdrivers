@@ -193,7 +193,6 @@ func TestQueryMethods(t *testing.T) {
 	}
 
 	s, p, o := trpls[0].Subject(), trpls[0].Predicate(), trpls[0].Object()
-
 	los := []*storage.LookupOptions{
 		{},
 		{
