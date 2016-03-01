@@ -5,7 +5,7 @@
 This repository contains [BadWolf](http://google.github.io/badwolf/) storage
 driver implementations that provide persistent storage. It also provides an
 updated `bw` 
-(command line tool)[https://github.com/google/badwolf/blob/master/docs/command_line_tool.md]
+[command line tool](https://github.com/google/badwolf/blob/master/docs/command_line_tool.md)
 that registers all the drivers contained in this repository.
 
 Currently available driver implementations:
