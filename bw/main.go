@@ -22,7 +22,7 @@ import (
 	"github.com/google/badwolf/storage/memory"
 	"github.com/google/badwolf/tools/vcli/bw/common"
 	"github.com/google/badwolf/triple/literal"
-	"github.com/xllora/bwbolt/driver"
+	"github.com/xllora/bwdrivers/bwbolt"
 )
 
 var (
@@ -30,7 +30,7 @@ var (
 	registeredDrivers map[string]common.StoreGenerator
 
 	// Available flags.
-	driverName     = flag.String("driver", "BWBOLT", "The storage driver to use {BWBOLT|VOLATILE}.")
+	driverName     = flag.String("driver", "VOLATILE", "The storage driver to use {VOLATILE|BWBOLT}.")
 	bqlChannelSize = flag.Int("bql_channel_size", 0, "Internal channel size to use on BQL queries.")
 	// Add your driver flags below.
 	boltDBPath = flag.String("bolt_db_path", "", "The path to the Bolt database to use.")
@@ -47,7 +47,7 @@ func registerDrivers() {
 			return memory.NewStore(), nil
 		},
 		"BWBOLT": func() (storage.Store, error) {
-			s, bdb, err := driver.New(*boltDBPath, literal.DefaultBuilder())
+			s, bdb, err := bwbolt.New(*boltDBPath, literal.DefaultBuilder())
 			db = bdb
 			return s, err
 		},
