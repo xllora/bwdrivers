@@ -16,6 +16,7 @@ package main
 import (
 	"flag"
 	"os"
+	"time"
 
 	"github.com/boltdb/bolt"
 	"github.com/google/badwolf/storage"
@@ -33,8 +34,9 @@ var (
 	driverName     = flag.String("driver", "VOLATILE", "The storage driver to use {VOLATILE|BWBOLT}.")
 	bqlChannelSize = flag.Int("bql_channel_size", 0, "Internal channel size to use on BQL queries.")
 	// Add your driver flags below.
-	boltDBPath = flag.String("bolt_db_path", "", "The path to the Bolt database to use.")
-
+	boltDBPath   = flag.String("bolt_db_path", "", "The path to the Bolt database to use.")
+	boldTimeout  = flag.Duration("bold_timeout", 3*time.Second, "The duration of the timeout while opening the Bolt database/")
+	boltReadOnly = flag.Bool("bolt_db_read_only", false, "Use te Bolt DB only in read only mode.")
 	// Driver specific variables.
 	db *bolt.DB
 )
@@ -47,7 +49,7 @@ func registerDrivers() {
 			return memory.NewStore(), nil
 		},
 		"BWBOLT": func() (storage.Store, error) {
-			s, bdb, err := bwbolt.New(*boltDBPath, literal.DefaultBuilder())
+			s, bdb, err := bwbolt.New(*boltDBPath, literal.DefaultBuilder(), *boldTimeout, *boltReadOnly)
 			db = bdb
 			return s, err
 		},

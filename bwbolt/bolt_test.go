@@ -32,7 +32,7 @@ import (
 
 func testDriver(t *testing.T) (storage.Store, *bolt.DB) {
 	path := path.Join(os.TempDir(), fmt.Sprintf("%x-%x.bdb", time.Now().UnixNano(), rand.Int()))
-	d, db, err := New(path, literal.DefaultBuilder())
+	d, db, err := New(path, literal.DefaultBuilder(), 3*time.Second, false)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"fmt"
 	"reflect"
+	"time"
 
 	"github.com/boltdb/bolt"
 	"github.com/google/badwolf/storage"
@@ -39,9 +40,14 @@ type driver struct {
 const graphBucket = "GRAPHS"
 
 // New create a new BadWolf driver using BoltDB as a storage driver.
-func New(path string, lb literal.Builder) (storage.Store, *bolt.DB, error) {
+func New(path string, lb literal.Builder, timeOut time.Duration, readOnly bool) (storage.Store, *bolt.DB, error) {
+	// Bolt open options.
+	opts := &bolt.Options{
+		Timeout:  timeOut,
+		ReadOnly: readOnly,
+	}
 	// Open the DB.
-	db, err := bolt.Open(path, 0600, nil)
+	db, err := bolt.Open(path, 0600, opts)
 	if err != nil {
 		return nil, nil, fmt.Errorf("bwbolt driver initialization failure for file %q %v", path, err)
 	}
