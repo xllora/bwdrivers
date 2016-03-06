@@ -35,7 +35,7 @@ var (
 	bqlChannelSize = flag.Int("bql_channel_size", 0, "Internal channel size to use on BQL queries.")
 	// Add your driver flags below.
 	boltDBPath   = flag.String("bolt_db_path", "", "The path to the Bolt database to use.")
-	boldTimeout  = flag.Duration("bold_timeout", 3*time.Second, "The duration of the timeout while opening the Bolt database/")
+	boldTimeout  = flag.Duration("bold_timeout", 3*time.Second, "The duration of the timeout while opening the Bolt database.")
 	boltReadOnly = flag.Bool("bolt_db_read_only", false, "Use te Bolt DB only in read only mode.")
 	// Driver specific variables.
 	db *bolt.DB
