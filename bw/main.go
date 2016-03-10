@@ -31,8 +31,10 @@ var (
 	registeredDrivers map[string]common.StoreGenerator
 
 	// Available flags.
-	driverName     = flag.String("driver", "VOLATILE", "The storage driver to use {VOLATILE|BWBOLT}.")
-	bqlChannelSize = flag.Int("bql_channel_size", 0, "Internal channel size to use on BQL queries.")
+	driverName           = flag.String("driver", "VOLATILE", "The storage driver to use {VOLATILE|BWBOLT}.")
+	bqlChannelSize       = flag.Int("bql_channel_size", 0, "Internal channel size to use on BQL queries.")
+	bulkTripleOpSize     = flag.Int("bulk_triple_op_size", 1000, "Number of triples to use in bulk load operations.")
+	bulkTriplBuildersize = flag.Int("bulk_triple_builder_size_in_bytes", 1000, "Maximum size of literals when parsing a triple.")
 	// Add your driver flags below.
 	boltDBPath   = flag.String("bolt_db_path", "", "The path to the Bolt database to use.")
 	boldTimeout  = flag.Duration("bold_timeout", 3*time.Second, "The duration of the timeout while opening the Bolt database.")
@@ -59,7 +61,7 @@ func registerDrivers() {
 func main() {
 	flag.Parse()
 	registerDrivers()
-	ret := common.Run(*driverName, registeredDrivers, *bqlChannelSize)
+	ret := common.Run(*driverName, registeredDrivers, *bqlChannelSize, *bulkTripleOpSize, *bulkTriplBuildersize)
 	// Clean up.
 	if db != nil {
 		db.Close()
