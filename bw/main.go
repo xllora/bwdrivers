@@ -22,6 +22,7 @@ import (
 	"github.com/google/badwolf/storage"
 	"github.com/google/badwolf/storage/memory"
 	"github.com/google/badwolf/tools/vcli/bw/common"
+	"github.com/google/badwolf/tools/vcli/bw/repl"
 	"github.com/google/badwolf/triple/literal"
 	"github.com/xllora/bwdrivers/bwbolt"
 )
@@ -33,9 +34,9 @@ var (
 	// Available flags.
 	driverName = flag.String("driver", "VOLATILE", "The storage driver to use {VOLATILE|BWBOLT}.")
 
-	bqlChannelSize       = flag.Int("bql_channel_size", 0, "Internal channel size to use on BQL queries.")
-	bulkTripleOpSize     = flag.Int("bulk_triple_op_size", 1000, "Number of triples to use in bulk load operations.")
-	bulkTriplBuildersize = flag.Int("bulk_triple_builder_size_in_bytes", 1000, "Maximum size of literals when parsing a triple.")
+	bqlChannelSize        = flag.Int("bql_channel_size", 0, "Internal channel size to use on BQL queries.")
+	bulkTripleOpSize      = flag.Int("bulk_triple_op_size", 1000, "Number of triples to use in bulk load operations.")
+	bulkTripleBuildersize = flag.Int("bulk_triple_builder_size_in_bytes", 1000, "Maximum size of literals when parsing a triple.")
 
 	// Add your driver flags below.
 
@@ -66,7 +67,7 @@ func registerDrivers() {
 func main() {
 	flag.Parse()
 	registerDrivers()
-	ret := common.Run(*driverName, registeredDrivers, *bqlChannelSize, *bulkTripleOpSize, *bulkTriplBuildersize)
+	ret := common.Run(*driverName, registeredDrivers, *bqlChannelSize, *bulkTripleOpSize, *bulkTripleBuildersize, repl.SimpleReadLine)
 	// Clean up.
 	if db != nil {
 		db.Close()

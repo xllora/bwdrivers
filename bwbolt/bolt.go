@@ -97,6 +97,7 @@ func (d *driver) NewGraph(ctx context.Context, id string) (storage.Graph, error)
 	return &graph{
 		id: id,
 		db: d.db,
+		lb: d.lb,
 	}, nil
 }
 
@@ -120,6 +121,7 @@ func (d *driver) Graph(ctx context.Context, id string) (storage.Graph, error) {
 	return &graph{
 		id: id,
 		db: d.db,
+		lb: d.lb,
 	}, nil
 }
 
