@@ -15,7 +15,12 @@ package main
 
 import (
 	"flag"
+	"io"
+	"log"
 	"os"
+	"os/user"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -24,6 +29,7 @@ import (
 	"github.com/google/badwolf/tools/vcli/bw/common"
 	"github.com/google/badwolf/tools/vcli/bw/repl"
 	"github.com/google/badwolf/triple/literal"
+	"github.com/peterh/liner"
 	"github.com/xllora/bwdrivers/bwbolt"
 )
 
@@ -64,10 +70,64 @@ func registerDrivers() {
 	}
 }
 
+// Advanced line editing.
+func NewAdvancedReadLiner() repl.ReadLiner {
+	return func(*os.File) <-chan string {
+		line, c := liner.NewLiner(), make(chan string)
+		usr, err := user.Current()
+		if err != nil {
+			log.Fatal(err)
+		}
+		historyFile := filepath.Join(usr.HomeDir, ".badwolf_history")
+		go func() {
+			defer close(c)
+			defer line.Close()
+
+			// Load the history.
+			line.SetCtrlCAborts(true)
+			line.SetTabCompletionStyle(liner.TabCircular)
+
+			f, err := os.OpenFile(historyFile, os.O_RDONLY, 0600)
+			if err != nil {
+				f, err = os.OpenFile(historyFile, os.O_CREATE, 0600)
+				if err != nil {
+					panic("Cannot open history file in " + historyFile)
+				}
+			}
+			line.ReadHistory(f)
+			f.Close()
+
+			// Run the read loop.
+			cmd := ""
+			for {
+				text, err := line.Prompt("bql> ")
+				if err == liner.ErrPromptAborted || err == io.EOF {
+					break
+				}
+				cmd = strings.TrimSpace(cmd + " " + strings.TrimSpace(text))
+				if strings.HasSuffix(cmd, ";") {
+					c <- cmd
+					line.AppendHistory(cmd)
+					cmd = ""
+				}
+			}
+
+			// Write the history.
+			f, err = os.Create(historyFile)
+			if err != nil {
+				panic("Cannot rewrite history to " + historyFile + "; " + err.Error())
+			}
+			defer f.Close()
+			line.WriteHistory(f)
+		}()
+		return c
+	}
+}
+
 func main() {
 	flag.Parse()
 	registerDrivers()
-	ret := common.Run(*driverName, registeredDrivers, *bqlChannelSize, *bulkTripleOpSize, *bulkTripleBuildersize, repl.SimpleReadLine)
+	ret := common.Run(*driverName, registeredDrivers, *bqlChannelSize, *bulkTripleOpSize, *bulkTripleBuildersize, NewAdvancedReadLiner())
 	// Clean up.
 	if db != nil {
 		db.Close()
