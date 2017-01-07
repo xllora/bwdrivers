@@ -72,7 +72,7 @@ func registerDrivers() {
 
 // Advanced line editing.
 func NewAdvancedReadLiner() repl.ReadLiner {
-	return func(*os.File) <-chan string {
+	return func(done chan bool) <-chan string {
 		line, c := liner.NewLiner(), make(chan string)
 		usr, err := user.Current()
 		if err != nil {
@@ -108,6 +108,9 @@ func NewAdvancedReadLiner() repl.ReadLiner {
 				if strings.HasSuffix(cmd, ";") {
 					c <- cmd
 					line.AppendHistory(cmd)
+					if <-done {
+						break
+					}
 					cmd = ""
 				}
 			}
