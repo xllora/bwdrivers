@@ -733,7 +733,7 @@ func (g *graph) Exist(ctx context.Context, t *triple.Triple) (bool, error) {
 // Triples pushes to the provided channel all available triples in the graph.
 // The function does not return immediately but spawns a goroutine to satisfy
 // elements in the channel.
-func (g *graph) Triples(ctx context.Context, trpls chan<- *triple.Triple) error {
+func (g *graph) Triples(ctx context.Context, lo *storage.LookupOptions, trpls chan<- *triple.Triple) error {
 	defer close(trpls)
 	return g.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(graphBucket))
@@ -748,7 +748,7 @@ func (g *graph) Triples(ctx context.Context, trpls chan<- *triple.Triple) error 
 		if spo == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
-		c := spo.Cursor()
+		cnt, c := 0, spo.Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			if reflect.DeepEqual(v, []byte{}) {
 				continue
@@ -757,7 +757,10 @@ func (g *graph) Triples(ctx context.Context, trpls chan<- *triple.Triple) error 
 			if err != nil {
 				return fmt.Errorf("corrupt index SPO failing to parse %q with error %v", string(v), err)
 			}
-			trpls <- t
+			if g.shouldAccept(cnt, t, lo) {
+				trpls <- t
+			}
+			cnt++
 		}
 		return nil
 	})

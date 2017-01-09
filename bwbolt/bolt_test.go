@@ -124,7 +124,7 @@ func TestAddRemoveExistTriples(t *testing.T) {
 	}
 	tc := make(chan *triple.Triple)
 	go func() {
-		err := g.Triples(ctx, tc)
+		err := g.Triples(ctx, storage.DefaultLookup, tc)
 		if err != nil {
 			t.Fatalf("graph.Triples failed ot retrieve triples from test graph with error %v", err)
 		}
@@ -152,7 +152,7 @@ func TestAddRemoveExistTriples(t *testing.T) {
 	}
 	tc = make(chan *triple.Triple)
 	go func() {
-		err := g.Triples(ctx, tc)
+		err := g.Triples(ctx, storage.DefaultLookup, tc)
 		if err != nil {
 			t.Fatalf("graph.Triples failed ot retrieve non existent triples from test graph with error %v", err)
 		}
