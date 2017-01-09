@@ -373,8 +373,8 @@ func (g *graph) Objects(ctx context.Context, s *node.Node, p *predicate.Predicat
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				objs <- t.Object()
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -409,8 +409,8 @@ func (g *graph) Subjects(ctx context.Context, p *predicate.Predicate, o *triple.
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				subs <- t.Subject()
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -445,8 +445,8 @@ func (g *graph) PredicatesForSubject(ctx context.Context, s *node.Node, lo *stor
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				prds <- t.Predicate()
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -481,8 +481,8 @@ func (g *graph) PredicatesForObject(ctx context.Context, o *triple.Object, lo *s
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				prds <- t.Predicate()
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -517,8 +517,8 @@ func (g *graph) PredicatesForSubjectAndObject(ctx context.Context, s *node.Node,
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				prds <- t.Predicate()
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -553,8 +553,8 @@ func (g *graph) TriplesForSubject(ctx context.Context, s *node.Node, lo *storage
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				trpls <- t
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -589,8 +589,8 @@ func (g *graph) TriplesForPredicate(ctx context.Context, p *predicate.Predicate,
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				trpls <- t
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -625,8 +625,8 @@ func (g *graph) TriplesForObject(ctx context.Context, o *triple.Object, lo *stor
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				trpls <- t
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -661,8 +661,8 @@ func (g *graph) TriplesForSubjectAndPredicate(ctx context.Context, s *node.Node,
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				trpls <- t
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -697,8 +697,8 @@ func (g *graph) TriplesForPredicateAndObject(ctx context.Context, p *predicate.P
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				trpls <- t
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
@@ -759,8 +759,8 @@ func (g *graph) Triples(ctx context.Context, lo *storage.LookupOptions, trpls ch
 			}
 			if g.shouldAccept(cnt, t, lo) {
 				trpls <- t
+				cnt++
 			}
-			cnt++
 		}
 		return nil
 	})
