@@ -130,7 +130,7 @@ func NewAdvancedReadLiner() repl.ReadLiner {
 func main() {
 	flag.Parse()
 	registerDrivers()
-	ret := common.Run(*driverName, registeredDrivers, *bqlChannelSize, *bulkTripleOpSize, *bulkTripleBuildersize, NewAdvancedReadLiner())
+	ret := common.Run(*driverName, flag.Args(), registeredDrivers, *bqlChannelSize, *bulkTripleOpSize, *bulkTripleBuildersize, NewAdvancedReadLiner())
 	// Clean up.
 	if db != nil {
 		db.Close()
