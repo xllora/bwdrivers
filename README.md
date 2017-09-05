@@ -44,6 +44,10 @@ Usage of ./bin/bw:
     	The storage driver to use {VOLATILE|BWBOLT}. (default "VOLATILE")
 ```
 
+For more information about how to use the commands or how the flags work
+please see the 
+[original documentation](https://github.com/google/badwolf/blob/master/docs/command_line_tool.md). 
+
 ## Testing the command line tool
 
 You may always want to run all the test for both repos `badwolf` and 
