@@ -370,3 +370,39 @@ func TestQueryMethods(t *testing.T) {
 		}
 	}
 }
+
+func TestTriplesForObject(t *testing.T) {
+	ctx, trpls := context.Background(), getTestTriples(t)
+	st, db := testDriver(t)
+	defer db.Close()
+
+	g, err := st.NewGraph(ctx, "test")
+	if err != nil {
+		t.Fatalf("store.New failed to create test graph with error %v", err)
+	}
+
+	err = g.AddTriples(ctx, trpls)
+	if err != nil {
+		t.Errorf("graph.AddTriples failed to add triple to the test graph with error %v", err)
+	}
+
+	opts := &storage.LookupOptions{}
+	// Check PredicatesForObject.
+	for _, tr := range trpls {
+		trps := make(chan *triple.Triple)
+		go func() {
+			err := g.TriplesForObject(ctx, tr.Object(), opts, trps)
+			if err != nil {
+				t.Fatalf("graph.PredicatesForObject(_, %q, _, _) failed with %v", tr.Object(), err)
+			}
+		}()
+		cnt := 0
+		for _ = range trps {
+			cnt++
+		}
+		if cnt < 1 {
+			t.Errorf("graph.TripleForObject(_, %q, _, _) returned no object", tr.Object())
+		}
+
+	}
+}

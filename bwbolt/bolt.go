@@ -177,6 +177,13 @@ type indexUpdate struct {
 	value []byte
 }
 
+const(
+	idxSPO="SPO"
+	idxSOP="SOP"
+	idxPOS="POS"
+	idxOPS="OPS"
+)
+
 // Given a triple, returns the updates to perform to the indices.
 func (g *graph) tripleToIndexUpdate(t *triple.Triple) []*indexUpdate {
 	var updates []*indexUpdate
@@ -185,62 +192,62 @@ func (g *graph) tripleToIndexUpdate(t *triple.Triple) []*indexUpdate {
 
 	updates = append(updates,
 		&indexUpdate{
-			idx:   "SPO",
+			idx:   idxSPO,
 			key:   []byte(s),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "SPO",
+			idx:   idxSPO,
 			key:   []byte(s + "\t" + p),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "SPO",
+			idx:   idxSPO,
 			key:   tt,
 			value: tt,
 		},
 		&indexUpdate{
-			idx:   "SOP",
+			idx:   idxSOP,
 			key:   []byte(s),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "SOP",
+			idx:   idxSOP,
 			key:   []byte(s + "\t" + o),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "SOP",
+			idx:   idxSOP,
 			key:   []byte(s + "\t" + o + "\t" + p),
 			value: tt,
 		},
 		&indexUpdate{
-			idx:   "POS",
+			idx:   idxPOS,
 			key:   []byte(p),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "POS",
+			idx:   idxPOS,
 			key:   []byte(p + "\t" + o),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "POS",
+			idx:   idxPOS,
 			key:   []byte(p + "\t" + o + "\t" + s),
 			value: tt,
 		},
 		&indexUpdate{
-			idx:   "OPS",
+			idx:   idxOPS,
 			key:   []byte(o),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "OPS",
+			idx:   idxOPS,
 			key:   []byte(o + "\t" + p),
 			value: nil,
 		},
 		&indexUpdate{
-			idx:   "OPS",
+			idx:   idxOPS,
 			key:   []byte(o + "\t" + p + "\t" + s),
 			value: tt,
 		})
@@ -358,7 +365,7 @@ func (g *graph) Objects(ctx context.Context, s *node.Node, p *predicate.Predicat
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		spo := gb.Bucket([]byte("SPO"))
+		spo := gb.Bucket([]byte(idxSPO))
 		if spo == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
@@ -394,7 +401,7 @@ func (g *graph) Subjects(ctx context.Context, p *predicate.Predicate, o *triple.
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		pos := gb.Bucket([]byte("POS"))
+		pos := gb.Bucket([]byte(idxPOS))
 		if pos == nil {
 			return fmt.Errorf("failed to load bucket POS for graph %s", g.id)
 		}
@@ -430,7 +437,7 @@ func (g *graph) PredicatesForSubject(ctx context.Context, s *node.Node, lo *stor
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		spo := gb.Bucket([]byte("SPO"))
+		spo := gb.Bucket([]byte(idxSPO))
 		if spo == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
@@ -466,7 +473,7 @@ func (g *graph) PredicatesForObject(ctx context.Context, o *triple.Object, lo *s
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		ops := gb.Bucket([]byte("OPS"))
+		ops := gb.Bucket([]byte(idxOPS))
 		if ops == nil {
 			return fmt.Errorf("failed to load bucket OPS for graph %s", g.id)
 		}
@@ -502,7 +509,7 @@ func (g *graph) PredicatesForSubjectAndObject(ctx context.Context, s *node.Node,
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		sop := gb.Bucket([]byte("SOP"))
+		sop := gb.Bucket([]byte(idxSOP))
 		if sop == nil {
 			return fmt.Errorf("failed to load bucket SOP for graph %s", g.id)
 		}
@@ -538,7 +545,7 @@ func (g *graph) TriplesForSubject(ctx context.Context, s *node.Node, lo *storage
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		spo := gb.Bucket([]byte("SPO"))
+		spo := gb.Bucket([]byte(idxSPO))
 		if spo == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
@@ -574,7 +581,7 @@ func (g *graph) TriplesForPredicate(ctx context.Context, p *predicate.Predicate,
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		pos := gb.Bucket([]byte("POS"))
+		pos := gb.Bucket([]byte(idxPOS))
 		if pos == nil {
 			return fmt.Errorf("failed to load bucket POS for graph %s", g.id)
 		}
@@ -610,7 +617,7 @@ func (g *graph) TriplesForObject(ctx context.Context, o *triple.Object, lo *stor
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		pos := gb.Bucket([]byte("POS"))
+		pos := gb.Bucket([]byte(idxOPS))
 		if pos == nil {
 			return fmt.Errorf("failed to load bucket POS for graph %s", g.id)
 		}
@@ -646,7 +653,7 @@ func (g *graph) TriplesForSubjectAndPredicate(ctx context.Context, s *node.Node,
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		spo := gb.Bucket([]byte("SPO"))
+		spo := gb.Bucket([]byte(idxSPO))
 		if spo == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
@@ -682,7 +689,7 @@ func (g *graph) TriplesForPredicateAndObject(ctx context.Context, p *predicate.P
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		pos := gb.Bucket([]byte("POS"))
+		pos := gb.Bucket([]byte(idxPOS))
 		if pos == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
@@ -717,7 +724,7 @@ func (g *graph) Exist(ctx context.Context, t *triple.Triple) (bool, error) {
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		spo := gb.Bucket([]byte("SPO"))
+		spo := gb.Bucket([]byte(idxSPO))
 		if spo == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
@@ -744,7 +751,7 @@ func (g *graph) Triples(ctx context.Context, lo *storage.LookupOptions, trpls ch
 		if gb == nil {
 			return fmt.Errorf("graph %q does not exist", g.id)
 		}
-		spo := gb.Bucket([]byte("SPO"))
+		spo := gb.Bucket([]byte(idxSPO))
 		if spo == nil {
 			return fmt.Errorf("failed to load bucket SPO for graph %s", g.id)
 		}
