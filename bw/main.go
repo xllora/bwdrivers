@@ -48,7 +48,7 @@ var (
 
 	// BwBolt driver.
 	boltDBPath   = flag.String("bolt_db_path", "", "The path to the Bolt database to use.")
-	boldTimeout  = flag.Duration("bold_timeout", 3*time.Second, "The duration of the timeout while opening the Bolt database.")
+	boldTimeout  = flag.Duration("bolt_db_timeout", 3*time.Second, "The duration of the timeout while opening the Bolt database.")
 	boltReadOnly = flag.Bool("bolt_db_read_only", false, "Use te Bolt DB only in read only mode.")
 
 	// Driver specific variables.
