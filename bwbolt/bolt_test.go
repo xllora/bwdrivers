@@ -13,14 +13,13 @@
 package bwbolt
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"os"
 	"path"
 	"testing"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/boltdb/bolt"
 	"github.com/google/badwolf/storage"

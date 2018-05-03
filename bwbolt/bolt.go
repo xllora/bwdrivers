@@ -16,6 +16,7 @@ package bwbolt
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"reflect"
 	"time"
@@ -26,7 +27,6 @@ import (
 	"github.com/google/badwolf/triple/literal"
 	"github.com/google/badwolf/triple/node"
 	"github.com/google/badwolf/triple/predicate"
-	"golang.org/x/net/context"
 )
 
 // driver implements BadWolf storage.Store for a fully compliant driver.
@@ -177,11 +177,11 @@ type indexUpdate struct {
 	value []byte
 }
 
-const(
-	idxSPO="SPO"
-	idxSOP="SOP"
-	idxPOS="POS"
-	idxOPS="OPS"
+const (
+	idxSPO = "SPO"
+	idxSOP = "SOP"
+	idxPOS = "POS"
+	idxOPS = "OPS"
 )
 
 // Given a triple, returns the updates to perform to the indices.
