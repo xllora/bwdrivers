@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/xllora/bwdrivers.svg?branch=master)](https://travis-ci.org/xllora/bwdrivers) [![GoDoc](https://godoc.org/github.com/xllora/bwdrivers?status.svg)](https://godoc.org/github.com/xllora/bwdrivers)
 
+THIS REPOSITORY HAS BEEN DEPRECATED AND WILL BE DELETE.
+
+PLEASE USE [BadWolf Drivers](http://google.github.io/badwolf-drivers/) INSTEAD.
+
 This repository contains [BadWolf](http://google.github.io/badwolf/) storage
 driver implementations that provide persistent storage. It also provides an
 updated `bw` 
