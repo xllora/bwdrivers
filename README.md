@@ -4,7 +4,7 @@
 
 THIS REPOSITORY HAS BEEN DEPRECATED AND WILL BE DELETE.
 
-PLEASE USE [BadWolf Drivers](http://google.github.io/badwolf-drivers/) INSTEAD.
+PLEASE USE [BadWolf Drivers](https://github.com/google/badwolf-drivers/) INSTEAD.
 
 This repository contains [BadWolf](http://google.github.io/badwolf/) storage
 driver implementations that provide persistent storage. It also provides an
